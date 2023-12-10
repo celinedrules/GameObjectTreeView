@@ -270,6 +270,7 @@ void MainWindow::addEmptyGameObject()
     QModelIndex newIndex = model->indexFromItem(gameObject, QModelIndex());
     if (newIndex.isValid()) {
         view->edit(newIndex);
+
     }
 }
 
