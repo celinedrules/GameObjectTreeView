@@ -56,6 +56,8 @@ MainWindow::MainWindow(QWidget *parent)
     buttonInfo = new QPushButton("Show GameObject Info");
     QObject::connect(buttonInfo, &QPushButton::clicked, this, &MainWindow::onButtonInfoClicked);
 
+    //connect(view, &QTreeView::entered, btnDelegate, &ButtonDelegate::setHoveredIndex);
+
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(view);
     layout->addWidget(buttonAdd);
@@ -83,7 +85,7 @@ void MainWindow::updateTreeView(QList<GameObject*>& gameObjects, QStandardItemMo
         nameItem->setData(QVariant::fromValue(gameObject)); // Add this line
 
         QStandardItem* iconItem = new QStandardItem();
-        iconItem->setData(QIcon(gameObject->icon()), Qt::DecorationRole);
+        //iconItem->setData(QIcon(gameObject->icon()), Qt::DecorationRole);
         iconItem->setData(QVariant::fromValue(gameObject)); // Store the GameObject pointer in the icon item as well
 
         QList<QStandardItem*> rowItems;
@@ -124,6 +126,7 @@ void MainWindow::setupModel()
     view->header()->setStretchLastSection(true);
     view->setItemDelegate(treeViewDelegate);
     view->setItemDelegateForColumn(1, btnDelegate);
+    view->setMouseTracking(true);
     view->viewport()->installEventFilter(this);
 
 }
@@ -270,7 +273,6 @@ void MainWindow::addEmptyGameObject()
     QModelIndex newIndex = model->indexFromItem(gameObject, QModelIndex());
     if (newIndex.isValid()) {
         view->edit(newIndex);
-
     }
 }
 

@@ -7,6 +7,7 @@
 HierarchyTreeeView::HierarchyTreeeView(QWidget *parent) : QTreeView(parent)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
+    setEditTriggers(QAbstractItemView::EditKeyPressed);
 }
 
 void HierarchyTreeeView::contextMenuEvent(QContextMenuEvent* event)
@@ -28,5 +29,17 @@ void HierarchyTreeeView::contextMenuEvent(QContextMenuEvent* event)
             qDebug() << "Action triggered on GameObject: " << gameObject->name();
         });
     menu.exec(event->globalPos());
+}
+
+void HierarchyTreeeView::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_F2 && currentIndex().isValid())
+    {
+        edit(currentIndex());
+    }
+    else
+    {
+        QTreeView::keyPressEvent(event);
+    }
 }
 

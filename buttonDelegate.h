@@ -14,7 +14,8 @@ public:
     ButtonDelegate(QObject *parent = nullptr) : QStyledItemDelegate(parent) {}
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override {
-        if (index.column() == 1) { // Assuming the button is in the second column
+        if (index.column() == 1 && option.state & QStyle::State_MouseOver) { // Removed the column index check
+            // Draw the button
             GameObject* gameObject = index.data(Qt::UserRole + 1).value<GameObject*>();
             if (gameObject) {
                 QIcon icon = gameObject->icon();
@@ -36,6 +37,7 @@ public:
             QStyledItemDelegate::paint(painter, option, index);
         }
     }
+
 
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override {
         if (event->type() == QEvent::MouseButtonRelease) {
