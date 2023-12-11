@@ -33,15 +33,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     GameObject* object1 = new GameObject("Object1", 10, 12);
     GameObject* object2 = new GameObject("Object2", 0, 0, object1);
+    GameObject* object3 = new GameObject("Object 3", 0, 0);
 
     gameObjects = QList<GameObject*>();
     gameObjects.append(object1);
     gameObjects.append(object2);
+    gameObjects.append(object3);
 
     //view = new QTreeView();
     view = new HierarchyTreeeView();
 
-    model = new TreeModel();
+    model = new TreeModel(gameObjects, this);
 
     setupModel();
 
@@ -55,6 +57,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     buttonInfo = new QPushButton("Show GameObject Info");
     QObject::connect(buttonInfo, &QPushButton::clicked, this, &MainWindow::onButtonInfoClicked);
+
+    connect(model, &TreeModel::gameObjectMoved, this, [=] {
+        updateTreeView(gameObjects, model);
+    });
 
     //connect(view, &QTreeView::entered, btnDelegate, &ButtonDelegate::setHoveredIndex);
 
@@ -80,33 +86,44 @@ void MainWindow::updateTreeView(QList<GameObject*>& gameObjects, QStandardItemMo
     // Create a map to store QStandardItem pointers for each GameObject
     QHash<GameObject*, QStandardItem*> itemMap;
 
+    // First, add all root GameObjects to the itemMap and the model
     for (GameObject* gameObject : gameObjects) {
-        QStandardItem* nameItem = new QStandardItem(gameObject->name());
-        nameItem->setData(QVariant::fromValue(gameObject)); // Add this line
+        if (!gameObject->parent()) {
+            QStandardItem* nameItem = new QStandardItem(gameObject->name());
+            nameItem->setData(QVariant::fromValue(gameObject));
 
-        QStandardItem* iconItem = new QStandardItem();
-        //iconItem->setData(QIcon(gameObject->icon()), Qt::DecorationRole);
-        iconItem->setData(QVariant::fromValue(gameObject)); // Store the GameObject pointer in the icon item as well
+            QStandardItem* iconItem = new QStandardItem();
+            iconItem->setData(QVariant::fromValue(gameObject));
 
-        QList<QStandardItem*> rowItems;
-        rowItems << nameItem << iconItem; // Changed the order here
+            QList<QStandardItem*> rowItems;
+            rowItems << nameItem << iconItem;
 
-        // Store the QStandardItem in the map for future reference
-        itemMap[gameObject] = nameItem; // Changed to nameItem
-
-        if (gameObject->parent()) {
-            // Find the parent QStandardItem in the map
-            QStandardItem* parentItem = itemMap.value(gameObject->parent(), nullptr);
-
-            if (parentItem) {
-                // Append the current item as a child of the parent item
-                parentItem->appendRow(rowItems);
-            }
-        } else {
-            // If there is no parent, add the current item directly to the model
+            itemMap[gameObject] = nameItem;
             model->appendRow(rowItems);
         }
     }
+
+    // Then, add all GameObjects that do have a parent
+    for (GameObject* gameObject : gameObjects) {
+        if (gameObject->parent()) {
+            QStandardItem* nameItem = new QStandardItem(gameObject->name());
+            nameItem->setData(QVariant::fromValue(gameObject));
+
+            QStandardItem* iconItem = new QStandardItem();
+            iconItem->setData(QVariant::fromValue(gameObject));
+
+            QList<QStandardItem*> rowItems;
+            rowItems << nameItem << iconItem;
+
+            itemMap[gameObject] = nameItem;
+
+            QStandardItem* parentItem = itemMap.value(gameObject->parent(), nullptr);
+            if (parentItem) {
+                parentItem->appendRow(rowItems);
+            }
+        }
+    }
+
     restoreExpandedState();
 }
 
@@ -127,6 +144,9 @@ void MainWindow::setupModel()
     view->setItemDelegate(treeViewDelegate);
     view->setItemDelegateForColumn(1, btnDelegate);
     view->setMouseTracking(true);
+    view->setDragEnabled(true);
+    view->setAcceptDrops(true);
+    view->setDragDropMode(QAbstractItemView::InternalMove);
     view->viewport()->installEventFilter(this);
 
 }
