@@ -15,6 +15,10 @@ public:
 protected:
     void contextMenuEvent(QContextMenuEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    void startDrag(Qt::DropActions supportedActions) override;
+
+private:
+    QPoint dragStartPosition;
 };
 
 #endif // HIERARCHYTREEEVIEW_H

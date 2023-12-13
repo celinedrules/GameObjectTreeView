@@ -7,6 +7,7 @@
         <file>branch-more.png</file>
         <file>branch-open.png</file>
         <file>visible2.png</file>
+        <file>drag.png</file>
     </qresource>
     <qresource prefix="/resources/stylesheets">
         <file>stylesheet.qss</file>
