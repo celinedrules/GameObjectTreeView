@@ -1,5 +1,4 @@
 QTreeView {
-    alternate-background-color: #343434;
     show-decoration-selected: 1;
     background: #383838;
     color: #858585;

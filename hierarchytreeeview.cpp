@@ -6,11 +6,44 @@
 #include <QMenu>
 #include <QMimeData>
 #include <QModelIndex>
+#include <QPainter>
 
 HierarchyTreeeView::HierarchyTreeeView(QWidget *parent) : QTreeView(parent)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setEditTriggers(QAbstractItemView::EditKeyPressed);
+}
+
+void HierarchyTreeeView::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(viewport());
+
+    int rowCount = model()->rowCount();
+
+    for(int row = 0; row < rowCount; ++ row) {
+        QModelIndex index = model()->index(row, 0);
+        QRect rect = visualRect(index);
+        rect.setX(24);
+        rect.setWidth(columnWidth(0) + 24);
+
+        QColor backgroundColor = (row % 2 == 0) ? QColor(56, 56, 56) : QColor(52, 52, 52);
+        painter.fillRect(rect, backgroundColor);
+    }
+
+    QRect fullRect = viewport()->rect();
+    // QRect firstColumnRect(24, 0, columnWidth(0) + 24, fullRect.height());
+    QRect secondColumnRect(0, 0, 24, fullRect.height());
+
+
+    // // Set the colors for each column
+    // QColor firstColumnColor(52, 52, 52); // Yellow for the first column
+    QColor secondColumnColor(45, 45, 45);  // Green for the second column
+
+    // // Paint the background of each column
+    // painter.fillRect(firstColumnRect, firstColumnColor);
+    painter.fillRect(secondColumnRect, secondColumnColor);
+
+    QTreeView::paintEvent(event);  // Call the base class paintEvent
 }
 
 void HierarchyTreeeView::contextMenuEvent(QContextMenuEvent* event)

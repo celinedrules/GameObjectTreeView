@@ -16,10 +16,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override {
         GameObject* gameObject = index.data(Qt::UserRole + 1).value<GameObject*>();
         if(gameObject){
-            if ((index.column() == 1 && option.state & QStyle::State_MouseOver) || !gameObject->visible() ) { // Removed the column index check
-            // Draw the button
-            // GameObject* gameObject = index.data(Qt::UserRole + 1).value<GameObject*>();
-
+            if (index.column() == 1) {
                 QIcon icon = gameObject->icon();
 
                 QSize iconSize(24, 24); // Adjust the width and height as needed
@@ -29,11 +26,13 @@ public:
 
                 // Draw the transparent button
                 painter->setPen(Qt::NoPen); // Set the pen to NoPen to hide the border
-                painter->setBrush(Qt::transparent);
+                painter->setBrush(QColor(45, 45, 45));
                 painter->drawRect(buttonRect);
 
                 // Draw the icon on the transparent button
-                icon.paint(painter, buttonRect, Qt::AlignCenter, QIcon::Normal, QIcon::On);            
+                if(option.state & QStyle::State_MouseOver || !gameObject->visible()) {
+                    icon.paint(painter, buttonRect, Qt::AlignCenter, QIcon::Normal, QIcon::On);
+                }
             }
         }
         else {

@@ -138,7 +138,7 @@ void MainWindow::setupModel()
     view->header()->swapSections(0, 1);
     view->header()->setHidden(true);
     view->setSelectionBehavior(QAbstractItemView::SelectRows);
-    view->setAlternatingRowColors(true);
+    //view->setAlternatingRowColors(true);
     view->setStyleSheet(style);
     view->header()->setStretchLastSection(true);
     view->setItemDelegate(treeViewDelegate);

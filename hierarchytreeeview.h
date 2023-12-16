@@ -11,6 +11,7 @@ class HierarchyTreeeView : public QTreeView
     Q_OBJECT
 public:
     explicit HierarchyTreeeView(QWidget* parent = nullptr);
+    void paintEvent(QPaintEvent *event) override;
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event) override;
