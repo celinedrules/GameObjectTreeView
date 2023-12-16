@@ -14,10 +14,12 @@ public:
     ButtonDelegate(QObject *parent = nullptr) : QStyledItemDelegate(parent) {}
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override {
-        if (index.column() == 1 && option.state & QStyle::State_MouseOver) { // Removed the column index check
+        GameObject* gameObject = index.data(Qt::UserRole + 1).value<GameObject*>();
+        if(gameObject){
+            if ((index.column() == 1 && option.state & QStyle::State_MouseOver) || !gameObject->visible() ) { // Removed the column index check
             // Draw the button
-            GameObject* gameObject = index.data(Qt::UserRole + 1).value<GameObject*>();
-            if (gameObject) {
+            // GameObject* gameObject = index.data(Qt::UserRole + 1).value<GameObject*>();
+
                 QIcon icon = gameObject->icon();
 
                 QSize iconSize(24, 24); // Adjust the width and height as needed
@@ -31,13 +33,13 @@ public:
                 painter->drawRect(buttonRect);
 
                 // Draw the icon on the transparent button
-                icon.paint(painter, buttonRect, Qt::AlignCenter, QIcon::Normal, QIcon::On);
+                icon.paint(painter, buttonRect, Qt::AlignCenter, QIcon::Normal, QIcon::On);            
             }
-        } else {
+        }
+        else {
             QStyledItemDelegate::paint(painter, option, index);
         }
     }
-
 
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override {
         if (event->type() == QEvent::MouseButtonRelease) {
