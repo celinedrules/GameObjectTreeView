@@ -1,4 +1,4 @@
-#include "GameObject.h"
+#include "gameobject.h"
 #include "hierarchytreeview.h"
 
 #include <QApplication>
@@ -16,10 +16,10 @@ HierarchyTreeView::HierarchyTreeView(QList<GameObject*> &gameObjects, QWidget *p
     setContextMenuPolicy(Qt::CustomContextMenu);
     setEditTriggers(QAbstractItemView::EditKeyPressed);
 
-    treeViewDelegate = new TreeViewDelegate;
-    btnDelegate = new ButtonDelegate(this);
+    treeViewDelegate = new HierarchyTreeViewDelegate;
+    btnDelegate = new HierarchyButtonDelegate(this);
 
-    connect(btnDelegate, &ButtonDelegate::buttonClicked, this, &HierarchyTreeView::visibleClicked);
+    connect(btnDelegate, &HierarchyButtonDelegate::buttonClicked, this, &HierarchyTreeView::visibleClicked);
 
     QFile styleFile(":/resources/stylesheets/stylesheet.qss");
     styleFile.open(QFile::ReadOnly);
@@ -27,7 +27,7 @@ HierarchyTreeView::HierarchyTreeView(QList<GameObject*> &gameObjects, QWidget *p
     // Apply the loaded stylesheet
     style = QString(styleFile.readAll());
 
-    _model = new TreeModel(gameObjects, this);
+    _model = new HierarchyTreeModel(gameObjects, this);
 
     this->setModel(_model);
 
@@ -35,7 +35,7 @@ HierarchyTreeView::HierarchyTreeView(QList<GameObject*> &gameObjects, QWidget *p
 
     connect(this, &QTreeView::customContextMenuRequested, this, &HierarchyTreeView::showContextMenu);
     connect(_model, &QStandardItemModel::itemChanged, this, &HierarchyTreeView::onItemChanged);
-    connect(_model, &TreeModel::gameObjectMoved, this, [=] {
+    connect(_model, &HierarchyTreeModel::gameObjectMoved, this, [=] {
         updateTreeView();
     });
 }

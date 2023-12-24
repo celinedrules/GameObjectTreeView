@@ -1,17 +1,17 @@
-#ifndef BUTTONDELEGATE_H
-#define BUTTONDELEGATE_H
+#ifndef HIERARCHYBUTTONDELEGATE_H
+#define HIERARCHYBUTTONDELEGATE_H
 
-#include "GameObject.h"
+#include "gameobject.h"
 
 #include <QApplication>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QStyledItemDelegate>
 
-class ButtonDelegate : public QStyledItemDelegate {
+class HierarchyButtonDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
-    ButtonDelegate(QObject *parent = nullptr) : QStyledItemDelegate(parent) {}
+    HierarchyButtonDelegate(QObject *parent = nullptr) : QStyledItemDelegate(parent) {}
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override {
         GameObject* gameObject = index.data(Qt::UserRole + 1).value<GameObject*>();
@@ -57,4 +57,4 @@ signals:
 };
 
 
-#endif // BUTTONDELEGATE_H
+#endif // HIERARCHYBUTTONDELEGATE_H

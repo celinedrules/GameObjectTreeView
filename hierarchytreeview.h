@@ -1,10 +1,10 @@
 #ifndef HIERARCHYTREEVIEW_H
 #define HIERARCHYTREEVIEW_H
 
-#include "GameObject.h"
-#include "TreeModel.h"
-#include "TreeViewDelegate.h"
-#include "buttonDelegate.h"
+#include "gameobject.h"
+#include "hierarchytreemodel.h"
+#include "hierarchytreeviewdelegate.h"
+#include "hierarchybuttondelegate.h"
 #include <QContextMenuEvent>
 #include <QTreeView>
 
@@ -19,9 +19,9 @@ public:
     void updateTreeView();
     void addEmptyGameObject();
     GameObject* getCurrentGameObject();
-    TreeModel *_model;
-    ButtonDelegate *btnDelegate;
-    TreeViewDelegate *treeViewDelegate;
+    HierarchyTreeModel *_model;
+    HierarchyButtonDelegate *btnDelegate;
+    HierarchyTreeViewDelegate *treeViewDelegate;
 
 public slots:
     void removeSelectedRow(QString guid);

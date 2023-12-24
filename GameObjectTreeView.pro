@@ -14,12 +14,11 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
-    GameObject.h \
-    TreeItem.h \
-    TreeModel.h \
-    TreeViewDelegate.h \
-    buttonDelegate.h \
+    gameobject.h \
+    hierarchybuttondelegate.h \
+    hierarchytreemodel.h \
     hierarchytreeview.h \
+    hierarchytreeviewdelegate.h \
     mainwindow.h
 
 FORMS += \

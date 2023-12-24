@@ -1,17 +1,17 @@
-#ifndef TREEMODEL_H
-#define TREEMODEL_H
+#ifndef HIERARCHYTREEMODEL_H
+#define HIERARCHYTREEMODEL_H
 
-#include "GameObject.h"
+#include "gameobject.h"
 
 #include <QIODevice>
 #include <QMimeData>
 #include <QStandardItemModel>
 
 
-class TreeModel : public QStandardItemModel {
+class HierarchyTreeModel : public QStandardItemModel {
     Q_OBJECT
 public:
-    TreeModel(QList<GameObject*>& gameObjects, QObject *parent = nullptr)
+    HierarchyTreeModel(QList<GameObject*>& gameObjects, QObject *parent = nullptr)
         : QStandardItemModel(parent), gameObjects(gameObjects) {}
 
     Qt::ItemFlags flags(const QModelIndex &index) const override {
@@ -172,4 +172,4 @@ private:
         return nullptr;
     }
 };
-#endif // TREEMODEL_H
+#endif // HIERARCHYTREEMODEL_H

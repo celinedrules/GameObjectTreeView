@@ -3,7 +3,7 @@
 
 #include "hierarchytreeview.h"
 
-#include <GameObject.h>
+#include <gameobject.h>
 #include <QMainWindow>
 #include <QModelIndex>
 #include <QPushButton>

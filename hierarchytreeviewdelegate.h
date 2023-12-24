@@ -1,12 +1,12 @@
-#ifndef TREEVIEWDELEGATE_H
-#define TREEVIEWDELEGATE_H
+#ifndef HIERARCHYTREEVIEWDELEGATE_H
+#define HIERARCHYTREEVIEWDELEGATE_H
 
 #include <QEvent>
 #include <QMouseEvent>
 #include <QStyledItemDelegate>
 
 
-class TreeViewDelegate : public QStyledItemDelegate {
+class HierarchyTreeViewDelegate : public QStyledItemDelegate {
 public:
     QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
         QWidget* editor = QStyledItemDelegate::createEditor(parent, option, index);
@@ -17,4 +17,4 @@ public:
 };
 
 
-#endif // TREEVIEWDELEGATE_H
+#endif // HIERARCHYTREEVIEWDELEGATE_H
