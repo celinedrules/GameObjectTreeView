@@ -1,10 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "TreeModel.h"
-#include "TreeViewDelegate.h"
-#include "buttonDelegate.h"
-#include "hierarchytreeeview.h"
+#include "hierarchytreeview.h"
 
 #include <GameObject.h>
 #include <QMainWindow>
@@ -32,7 +29,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     QList<GameObject*> gameObjects;
-    HierarchyTreeeView *view;
+    HierarchyTreeView *view;
     QPushButton *buttonAdd;
     QPushButton *buttonInfo;
     QHash<GameObject*, QStandardItem*> map;

@@ -1,6 +1,5 @@
 #include "GameObject.h"
-#include "hierarchytreeeview.h"
-#include "mainwindow.h"
+#include "hierarchytreeview.h"
 
 #include <QApplication>
 #include <QDrag>
@@ -12,7 +11,7 @@
 #include <QFile>
 #include <QTimer>
 
-HierarchyTreeeView::HierarchyTreeeView(QList<GameObject*> &gameObjects, QWidget *parent) : QTreeView(parent), _gameObjects(gameObjects)
+HierarchyTreeView::HierarchyTreeView(QList<GameObject*> &gameObjects, QWidget *parent) : QTreeView(parent), _gameObjects(gameObjects)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setEditTriggers(QAbstractItemView::EditKeyPressed);
@@ -20,7 +19,7 @@ HierarchyTreeeView::HierarchyTreeeView(QList<GameObject*> &gameObjects, QWidget 
     treeViewDelegate = new TreeViewDelegate;
     btnDelegate = new ButtonDelegate(this);
 
-    connect(btnDelegate, &ButtonDelegate::buttonClicked, this, &HierarchyTreeeView::visibleClicked);
+    connect(btnDelegate, &ButtonDelegate::buttonClicked, this, &HierarchyTreeView::visibleClicked);
 
     QFile styleFile(":/resources/stylesheets/stylesheet.qss");
     styleFile.open(QFile::ReadOnly);
@@ -34,14 +33,14 @@ HierarchyTreeeView::HierarchyTreeeView(QList<GameObject*> &gameObjects, QWidget 
 
     setupModel();
 
-    connect(this, &QTreeView::customContextMenuRequested, this, &HierarchyTreeeView::showContextMenu);
-    connect(_model, &QStandardItemModel::itemChanged, this, &HierarchyTreeeView::onItemChanged);
+    connect(this, &QTreeView::customContextMenuRequested, this, &HierarchyTreeView::showContextMenu);
+    connect(_model, &QStandardItemModel::itemChanged, this, &HierarchyTreeView::onItemChanged);
     connect(_model, &TreeModel::gameObjectMoved, this, [=] {
         updateTreeView();
     });
 }
 
-void HierarchyTreeeView::paintEvent(QPaintEvent *event)
+void HierarchyTreeView::paintEvent(QPaintEvent *event)
 {
     QPainter painter(viewport());
 
@@ -70,7 +69,7 @@ void HierarchyTreeeView::paintEvent(QPaintEvent *event)
     QTreeView::paintEvent(event);  // Call the base class paintEvent
 }
 
-void HierarchyTreeeView::updateTreeView()
+void HierarchyTreeView::updateTreeView()
 {
     saveExpandedState();
     _model->clear();
@@ -120,12 +119,12 @@ void HierarchyTreeeView::updateTreeView()
     restoreExpandedState();
 }
 
-void HierarchyTreeeView::removeSelectedRow(QString guid)
+void HierarchyTreeView::removeSelectedRow(QString guid)
 {
     _model->removeRow(guid);
 }
 
-void HierarchyTreeeView::visibleClicked(QModelIndex index)
+void HierarchyTreeView::visibleClicked(QModelIndex index)
 {
     if (index.isValid()) {
         QModelIndex adjustedIndex;
@@ -156,7 +155,7 @@ void HierarchyTreeeView::visibleClicked(QModelIndex index)
     }
 }
 
-void HierarchyTreeeView::onItemChanged(QStandardItem *item)
+void HierarchyTreeView::onItemChanged(QStandardItem *item)
 {
     if (item) {
         GameObject* gameObject = item->data().value<GameObject*>();
@@ -166,7 +165,7 @@ void HierarchyTreeeView::onItemChanged(QStandardItem *item)
     }
 }
 
-void HierarchyTreeeView::contextMenuEvent(QContextMenuEvent* event)
+void HierarchyTreeView::contextMenuEvent(QContextMenuEvent* event)
 {
     QModelIndex index = indexAt(event->pos());
     if (!index.isValid()) {
@@ -187,7 +186,7 @@ void HierarchyTreeeView::contextMenuEvent(QContextMenuEvent* event)
     menu.exec(event->globalPos());
 }
 
-void HierarchyTreeeView::keyPressEvent(QKeyEvent *event)
+void HierarchyTreeView::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_F2 && currentIndex().isValid())
     {
@@ -199,7 +198,7 @@ void HierarchyTreeeView::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void HierarchyTreeeView::startDrag(Qt::DropActions supportedActions)
+void HierarchyTreeView::startDrag(Qt::DropActions supportedActions)
 {
     QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model());
     if (!standardModel)
@@ -226,7 +225,7 @@ void HierarchyTreeeView::startDrag(Qt::DropActions supportedActions)
     drag->exec(supportedActions, Qt::CopyAction);
 }
 
-void HierarchyTreeeView::setupModel()
+void HierarchyTreeView::setupModel()
 {
     _model->clear();
     _model->setColumnCount(2);
@@ -247,7 +246,7 @@ void HierarchyTreeeView::setupModel()
     this->viewport()->installEventFilter(this->parent());
 }
 
-void HierarchyTreeeView::saveExpandedState(const QModelIndex &parent)
+void HierarchyTreeView::saveExpandedState(const QModelIndex &parent)
 {
     for(int i = 0; i < _model->rowCount(parent); ++i) {
         QModelIndex idx = _model->index(i, 0, parent);
@@ -262,7 +261,7 @@ void HierarchyTreeeView::saveExpandedState(const QModelIndex &parent)
     }
 }
 
-void HierarchyTreeeView::restoreExpandedState(const QModelIndex &parent)
+void HierarchyTreeView::restoreExpandedState(const QModelIndex &parent)
 {
     for(int i = 0; i < _model->rowCount(parent); ++i) {
         QModelIndex idx = _model->index(i, 0, parent);
@@ -276,7 +275,7 @@ void HierarchyTreeeView::restoreExpandedState(const QModelIndex &parent)
     }
 }
 
-void HierarchyTreeeView::addEmptyGameObject()
+void HierarchyTreeView::addEmptyGameObject()
 {
     QString baseName = "GameObject";
     QString name = baseName;
@@ -306,7 +305,7 @@ void HierarchyTreeeView::addEmptyGameObject()
     }
 }
 
-GameObject* HierarchyTreeeView::getCurrentGameObject()
+GameObject* HierarchyTreeView::getCurrentGameObject()
 {
     QModelIndex index = this->currentIndex();
      if (index.isValid()) {
@@ -314,7 +313,7 @@ GameObject* HierarchyTreeeView::getCurrentGameObject()
     }
 }
 
-void HierarchyTreeeView::RemoveGameObject(const QString guid)
+void HierarchyTreeView::RemoveGameObject(const QString guid)
 {
     for (int i = 0; i < _gameObjects.size(); ++i) {
         if (_gameObjects[i]->guid() == guid) {
@@ -337,7 +336,7 @@ void HierarchyTreeeView::RemoveGameObject(const QString guid)
     updateTreeView();
 }
 
-void HierarchyTreeeView::showContextMenu(const QPoint &pos)
+void HierarchyTreeView::showContextMenu(const QPoint &pos)
 {
     QModelIndex index = this->indexAt(pos);
     QMenu contextMenu;
@@ -345,15 +344,15 @@ void HierarchyTreeeView::showContextMenu(const QPoint &pos)
         GameObject* gameObject = _model->itemFromIndex(index)->data().value<GameObject*>();
         if (gameObject) {
             QAction *addEmptyAction = contextMenu.addAction("Create Empty");
-            connect(addEmptyAction, &QAction::triggered, this, &HierarchyTreeeView::addEmptyGameObject);
+            connect(addEmptyAction, &QAction::triggered, this, &HierarchyTreeView::addEmptyGameObject);
             QAction *deleteAction = contextMenu.addAction("Delete");
             //connect(deleteAction, &QAction::triggered, this, &MainWindow::RemoveGameObject);
-            connect(deleteAction, &QAction::triggered, std::bind(&HierarchyTreeeView::RemoveGameObject, this, gameObject->guid()));
+            connect(deleteAction, &QAction::triggered, std::bind(&HierarchyTreeView::RemoveGameObject, this, gameObject->guid()));
         }
     } else {
         // This is an empty part of the tree view
         QAction *addEmptyAction = contextMenu.addAction("Create Empty");
-        connect(addEmptyAction, &QAction::triggered, this, &HierarchyTreeeView::addEmptyGameObject);
+        connect(addEmptyAction, &QAction::triggered, this, &HierarchyTreeView::addEmptyGameObject);
         QAction *action4 = contextMenu.addAction("Action 4");
         // Connect the actions to slots...
     }

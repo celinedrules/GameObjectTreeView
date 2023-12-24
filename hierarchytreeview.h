@@ -1,5 +1,5 @@
-#ifndef HIERARCHYTREEEVIEW_H
-#define HIERARCHYTREEEVIEW_H
+#ifndef HIERARCHYTREEVIEW_H
+#define HIERARCHYTREEVIEW_H
 
 #include "GameObject.h"
 #include "TreeModel.h"
@@ -10,11 +10,11 @@
 
 
 
-class HierarchyTreeeView : public QTreeView
+class HierarchyTreeView : public QTreeView
 {
     Q_OBJECT
 public:
-    explicit HierarchyTreeeView(QList<GameObject*> &gameObjects, QWidget* parent = nullptr);
+    explicit HierarchyTreeView(QList<GameObject*> &gameObjects, QWidget* parent = nullptr);
     void paintEvent(QPaintEvent *event) override;
     void updateTreeView();
     void addEmptyGameObject();
@@ -46,4 +46,4 @@ private:
     QString style;
 };
 
-#endif // HIERARCHYTREEEVIEW_H
+#endif // HIERARCHYTREEVIEW_H

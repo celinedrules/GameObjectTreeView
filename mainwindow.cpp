@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     gameObjects.append(object2);
     gameObjects.append(object3);
 
-    view = new HierarchyTreeeView(gameObjects);
+    view = new HierarchyTreeView(gameObjects);
 
     buttonAdd = new QPushButton("Add GameObject");
     QObject::connect(buttonAdd, &QPushButton::clicked, this, &MainWindow::onButtonAddClicked);
