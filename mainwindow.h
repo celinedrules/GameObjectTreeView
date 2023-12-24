@@ -24,35 +24,18 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void updateTreeView(QList<GameObject*>& gameObjects, QStandardItemModel *model);
-    void setupModel();
     QStandardItem *findItemInModel(const GameObject *gameObject, QStandardItem *parentItem) const;
 public slots:
     void onButtonAddClicked();
     void onButtonInfoClicked();
-    void visibleClicked(QModelIndex index);
-    void onItemChanged(QStandardItem *item);
-    void removeSelectedRow(QString guid);
 
 private:
     Ui::MainWindow *ui;
     QList<GameObject*> gameObjects;
-    //QTreeView *view;
     HierarchyTreeeView *view;
-    TreeModel *model;
     QPushButton *buttonAdd;
     QPushButton *buttonInfo;
     QHash<GameObject*, QStandardItem*> map;
-    ButtonDelegate *btnDelegate;
-    TreeViewDelegate *treeViewDelegate;
-    //QStringList headers;
-    QString style;
-    QSet<QString> expandedItems;
-    void saveExpandedState(const QModelIndex &parent = QModelIndex());
-    void restoreExpandedState(const QModelIndex &parent = QModelIndex());
-    void showContextMenu(const QPoint &pos);
-    void addEmptyGameObject();
-    void RemoveGameObject(const QString guid);
     bool eventFilter(QObject* obj, QEvent* event);
 };
 

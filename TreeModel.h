@@ -36,6 +36,10 @@ public:
         }
     }
 
+    void appendRow(QList<QStandardItem*> items){
+        QStandardItemModel::appendRow(items);
+    }
+
     void removeRow(QString guid) {
         qDebug() << guid;
 
