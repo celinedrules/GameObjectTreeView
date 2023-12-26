@@ -142,10 +142,10 @@ void HierarchyTreeView::visibleClicked(QModelIndex index)
             qDebug() << gameObject->name();
             gameObject->setVisible(!gameObject->visible());
             if(gameObject->visible()){
-                gameObject->setIcon(QIcon(":/resources/icons/visible.png"));
+                gameObject->setVisibleIcon(QIcon(":/resources/icons/visible.png"));
             }
             else{
-                gameObject->setIcon(QIcon(":/resources/icons/visible2.png"));
+                gameObject->setVisibleIcon(QIcon(":/resources/icons/visible2.png"));
             }
 
             QTimer::singleShot(0, this, [=] {
