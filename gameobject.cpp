@@ -4,12 +4,16 @@ GameObject::GameObject(){}
 
 GameObject::GameObject(const QString &name, int x, int y, GameObject *parent)
     : name_(name), x_(x), y_(y), parent_(parent) {
-    guid_ = QUuid::createUuid().toString();                                         // Generate a unique id and store it as a string
-    visibileIcon_ = QIcon(":/resources/icons/visible.png");                         // Set the default visibily icon to visible
-    visible_ = true;                                                                // Set the default visibility to visible
+    // Generate a unique GUID for the GameObject
+    guid_ = QUuid::createUuid().toString();
+    // Set the visibility icon of the GameObject
+    visibileIcon_ = QIcon(":/resources/icons/visible.png");
+    // Set the visibility status of the GameObject to true
+    visible_ = true;
 
-    if(parent != nullptr) {                                                         // Check if this GameObject has a parent specified
-        parent->addChild(this);                                                     // and if so make it a child of the parent
+    // If a parent GameObject is provided, add this GameObject as a child of the parent
+    if(parent != nullptr) {
+        parent->addChild(this);
     }
 }
 
@@ -30,13 +34,17 @@ void GameObject::setVisibleIcon(const QIcon &icon) { visibileIcon_= icon; }
 void GameObject::addChild(GameObject *child) { children_.append(child); }
 
 GameObject *GameObject::findChild(const QString &name) const {
-    for (GameObject* child : children_) {                                           // Loop through all the children for the GameObject
-        if (child->name() == name) {                                                // and check if the name matches the name we are looking for.
-            return child;                                                           // If so, return that GameObject
+    // Loop through each child GameObject
+    for (GameObject* child : children_) {
+        // Check if the name of the child GameObject matches the provided name
+        if (child->name() == name) {
+            // If a match is found, return the child GameObject
+            return child;
         }
     }
 
-    return nullptr;                                                                 // No child GameObject was found with the specified name
+    // If no match is found, return nullptr
+    return nullptr;
 }
 
 QList<GameObject *> GameObject::children() const { return children_; }
